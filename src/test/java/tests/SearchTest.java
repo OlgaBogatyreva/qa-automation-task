@@ -86,4 +86,16 @@ public class SearchTest extends BaseTest {
         searchPage.checkResultCount(expectedCount);
     }
 
+    @Test
+    public void shouldShowErrorWhenDateFromIsGreaterThanDateTo() {
+        SearchPage searchPage = loginAndGetSearchPage();
+
+        // Вводим некорректный период (с 2025 по 2020)
+        searchPage.fillSearchForm(null, null, null, null, "2025-01-01", "2020-01-01", null);
+
+        // Проверяем, что появилась плашка с ошибкой
+        $("#searchAlertsHolder").shouldBe(Condition.visible)
+                .shouldHave(Condition.text("Дата «с» не может быть позже даты «по»"));
+    }
+
 }
